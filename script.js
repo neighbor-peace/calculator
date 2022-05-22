@@ -10,6 +10,8 @@ function inputHandler() {
     let input = this.textContent;
     if (!isNaN(input)) {
         numbers(input);
+    } else if (input === '.') {
+        floatingPoint();
     } else if (input === 'AC') {
         AC();
     } else if (input === '=') {
@@ -37,6 +39,28 @@ function numbers(input) {
         display.textContent = inputObj.operandB;
     };
 };
+
+function floatingPoint() {
+    if (!inputObj.operandA) {
+        inputObj.operandA = '0.';
+        display.textContent = inputObj.operandA;
+    } else if (!inputObj.operator && noDecimalChecker(inputObj.operandA)) {
+        inputObj.operandA += '.';
+        display.textContent = inputObj.operandA;
+    } else if (inputObj.operator && !inputObj.operandB) {
+        inputObj.operandB = '0.';
+        display.textContent = inputObj.operandB;
+    } else if (inputObj.operandB && noDecimalChecker(inputObj.operandB)) {
+        inputObj.operandB += '.';
+        display.textContent = inputObj.operandB;
+    } else {
+        return;
+    };
+};
+
+function noDecimalChecker(operandInput) {
+    return !operandInput.includes('.');
+}
 
 function AC() {
     inputObj = {};
