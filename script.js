@@ -4,7 +4,7 @@ buttons.forEach((button) => {
     button.addEventListener('click', inputHandler);
 });
 
-let inputObj = {};
+let inputObj = {operandA: '0',};
 
 function inputHandler() {
     let input = this.textContent;
@@ -24,14 +24,15 @@ function inputHandler() {
 function numbers(input) {
     if (!inputObj.operator) {
         //inputObj.calculated stops new input from concatenating to previous result
-        if (!inputObj.operandA || inputObj.calculated) {
+        if (inputObj.operandA == 0 || inputObj.calculated) {
             inputObj.operandA = input;
+            inputObj.calculated = false;
         } else {
             inputObj.operandA += input;
         };
         display.textContent = inputObj.operandA;
     } else if (inputObj.operator) {
-        if (!inputObj.operandB) {
+        if (!inputObj.operandB || inputObj.operandB == 0) {
             inputObj.operandB = input;
         } else {
             inputObj.operandB += input;
@@ -41,10 +42,7 @@ function numbers(input) {
 };
 
 function floatingPoint() {
-    if (!inputObj.operandA) {
-        inputObj.operandA = '0.';
-        display.textContent = inputObj.operandA;
-    } else if (!inputObj.operator && noDecimalChecker(inputObj.operandA)) {
+    if (!inputObj.operator && noDecimalChecker(inputObj.operandA)) {
         inputObj.operandA += '.';
         display.textContent = inputObj.operandA;
     } else if (inputObj.operator && !inputObj.operandB) {
@@ -63,8 +61,8 @@ function noDecimalChecker(operandInput) {
 }
 
 function AC() {
-    inputObj = {};
-    display.textContent = '';
+    inputObj = {operandA: '0',};
+    display.textContent = '0';
 };
 
 function equals() {
