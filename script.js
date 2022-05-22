@@ -11,7 +11,7 @@ function multiply(x, y) {
 };
 
 function divide(x, y) {
- return x / y;
+    return x / y;
 };
 
 function operate(operator, x, y) {
@@ -29,7 +29,11 @@ function operate(operator, x, y) {
         case '÷':
             result = divide(x, y);
     };
-    return Number.isInteger(result) ? result : result.toFixed(3);
+    if (result = Infinity) {
+        return "Nice Try";
+    } else {
+        return Number.isInteger(result) ? result : result.toFixed(3);
+    };
 };
 
 //use object for holding input until user presses "="
