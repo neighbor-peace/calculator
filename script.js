@@ -1,17 +1,17 @@
 const display = document.querySelector('#display');
 const buttons = document.querySelectorAll('button');
 buttons.forEach((button) => {
-    button.addEventListener('click', inputHandler);
+    button.addEventListener('click', handleInput);
 });
 
 let inputObj = {operandA: '0',};
 
-function inputHandler() {
+function handleInput() {
     let input = this.textContent;
     if (!isNaN(input)) {
-        numbers(input);
+        enterNumber(input);
     } else if (input === '.') {
-        floatingPoint();
+        enterFloatingPoint();
     } else if (input === 'AC') {
         AC();
     } else if (input === '=') {
@@ -21,7 +21,7 @@ function inputHandler() {
     };
 };
 
-function numbers(input) {
+function enterNumber(input) {
     if (!inputObj.operator) {
         //inputObj.calculated stops new input from concatenating to previous result
         if (inputObj.operandA == 0 || inputObj.calculated) {
@@ -41,7 +41,7 @@ function numbers(input) {
     };
 };
 
-function floatingPoint() {
+function enterFloatingPoint() {
     if (!inputObj.operator && noDecimalChecker(inputObj.operandA)) {
         inputObj.operandA += '.';
         display.textContent = inputObj.operandA;
