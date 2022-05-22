@@ -1,0 +1,1 @@
+highlight clicked operator button

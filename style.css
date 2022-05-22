@@ -1,0 +1,83 @@
+body {
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    display: flex;
+}
+
+#content {
+    display: flex;
+    background-color: cyan;
+    flex: 1;
+    align-items: center;  
+    justify-content: center;  
+}
+
+.calculator.container {
+    flex-direction: column;
+    background-color: lightgreen;
+    width: 80%;
+    height: 80%;
+    max-width: 600px;
+    max-height: auto;
+}
+
+#display {
+    flex: 1;
+    background-color: white;
+    text-align: end;
+    font-size: 150px;
+}
+
+#buttons {
+    flex: 4;
+    display: flex;
+}
+
+.numbers.container {
+    flex-direction: column;
+    flex: 3;
+}
+
+.row {
+    display: flex;
+    flex: 1;
+    display: flex;
+    justify-content: space-around;
+    align-items: stretch;
+    
+}
+
+.fourth {
+    flex: 0.7;
+}
+
+#zero {
+    flex: 2;
+}
+
+button {
+    background-color: yellow;
+    flex: 1;
+    margin: 5px;
+}
+
+.operator.container {
+    flex-direction: column;
+    flex: 1;
+    justify-content: space-around;
+    align-items: stretch;
+}
+
+
+
+
+#header,
+#footer {
+    background-color: blue;
+}
