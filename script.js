@@ -50,7 +50,7 @@ function AC() {
 
 function numbers(input) {
     if (!inputObj.operator) {
-        if (!inputObj.operandA) {
+        if (!inputObj.operandA || inputObj.calculated) {
             inputObj.operandA = input;
         } else {
             inputObj.operandA += input;
@@ -79,7 +79,7 @@ function equals() {
     };
 };
 
-function operator() {
+function operator(input) {
     if (!inputObj.operandA) {
         return;
     } else if (!inputObj.operator) {
@@ -105,7 +105,7 @@ function inputHandler() {
     } else if (input === '=') {
         equals();
     } else {
-        operator();
+        operator(input);
     };
 };
 
