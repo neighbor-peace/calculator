@@ -67,6 +67,10 @@ button {
     margin: 5px;
 }
 
+button.toggled {
+    background-color: aqua;
+}
+
 .operator.container {
     flex-direction: column;
     flex: 1;

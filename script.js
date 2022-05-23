@@ -23,23 +23,61 @@ function processInput(e) {
                 break;
             case 'AC':
             case 'Delete':
+                toggleOperator();
                 enterAC();
                 break;
             case '=':
             case 'Enter':
+                toggleOperator();
                 calculate();
                 break;
             case '+':
-            case '-':
-            case 'x':
-            case '*':
-            case '/':
-            case '÷': 
+                toggleOperator(input);
                 enterOperator(input);
                 break;
+            case '-':
+                toggleOperator(input);
+                enterOperator(input);
+                break;
+            case 'x':
+            case '*':
+                toggleOperator(input);
+                enterOperator(input);
+                break;
+            case '/':
+            case '÷': 
+                toggleOperator(input);
+                enterOperator(input);
+                break;
+            case 'Backspace':
+                removeLastDigit();
+                break;
+    
             default: 
                 console.log(input + ' ignored')
-        }
+        };
+    };
+};
+
+function toggleOperator(input) {
+    buttons.forEach((button) => button.classList.remove('toggled'));
+    if(input) {
+        switch(input) {
+            case '+':
+                document.querySelector('#add').classList.add('toggled');
+                break;
+            case '-':
+                document.querySelector('#subtract').classList.add('toggled');
+                break;
+            case 'x':
+            case '*':
+                document.querySelector('#multiply').classList.add('toggled');
+                break;
+            case '/':
+            case '÷':
+                document.querySelector('#divide').classList.add('toggled');
+                break;
+        };
     };
 };
 
@@ -105,9 +143,10 @@ function calculate() {
 };
 
 function enterOperator(input) {
+    console.log();
     if (!inputObj.operandA) {
         return;
-    } else if (!inputObj.operator) {
+    } else if (!inputObj.operator || !inputObj.operandB) {
         inputObj.operator = input;
     } else if (!inputObj.operandB) {
         return;
