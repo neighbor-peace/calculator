@@ -8,13 +8,17 @@ buttons.forEach((button) => {
 
 document.addEventListener('keypress', processInput);
 
+document.addEventListener('keydown', (e) => {
+    if (e.key == 'Backspace') processInput(e)
+});
+
 function processInput(e) {
     let input = e.type == 'click' ? this.textContent : `${e.key}`;
     if (!isNaN(input)) {
         enterNumber(input);
     } else if (input === '.') {
         enterFloatingPoint();
-    } else if (input === 'AC' || input === 'Delete') {
+    } else if (input === 'AC' || input === 'Delete' || input === 'Backspace') {
         enterAC();
     } else if (input === '=' || input === 'Enter') {
         calculate();
