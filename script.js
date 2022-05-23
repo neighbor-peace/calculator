@@ -45,40 +45,21 @@ function processInput(e) {
                 enterOperator(input);
                 break;
             case '/':
-            case '÷': 
+            case '÷':
                 toggleOperator(input);
                 enterOperator(input);
                 break;
             case 'Backspace':
                 removeLastDigit();
                 break;
-    
-            default: 
+            default:
                 console.log(input + ' ignored')
         };
     };
 };
 
-function toggleOperator(input) {
-    buttons.forEach((button) => button.classList.remove('toggled'));
-    if(input) {
-        switch(input) {
-            case '+':
-                document.querySelector('#add').classList.add('toggled');
-                break;
-            case '-':
-                document.querySelector('#subtract').classList.add('toggled');
-                break;
-            case 'x':
-            case '*':
-                document.querySelector('#multiply').classList.add('toggled');
-                break;
-            case '/':
-            case '÷':
-                document.querySelector('#divide').classList.add('toggled');
-                break;
-        };
-    };
+function removeLastDigit() {
+
 };
 
 function enterNumber(input) {
@@ -128,6 +109,10 @@ function enterAC() {
     display.textContent = '0';
 };
 
+function toggleAC() {
+
+};
+
 function calculate() {
     if (!inputObj.operandA || !inputObj.operandB) {
         return;
@@ -136,7 +121,7 @@ function calculate() {
         inputObj = {
             operandA: result,
             //"calculated: true" stops new input from concatenating to previous result
-            calculated: true, 
+            calculated: true,
         };
         display.textContent = result;
     };
@@ -155,7 +140,30 @@ function enterOperator(input) {
         inputObj = {
             operandA: result,
             operator: input,};
-        display.textContent = result; 
+        display.textContent = result;
+    };
+};
+
+function toggleOperator(input) {
+    buttons.forEach((button) => button.classList.remove('toggled'));
+    if(input) {
+        let id = '';
+        switch(input) {
+            case '+':
+                id = '#add';
+                break;
+            case '-':
+                id = '#subtract';
+                break;
+            case 'x':
+            case '*':
+                id = '#multiply';
+                break;
+            case '/':
+            case '÷':
+                id = '#divide';
+        };
+        document.querySelector(id).classList.add('toggled');
     };
 };
 
@@ -165,7 +173,7 @@ function operate(operator, x, y) {
         case '+':
             result = add(x, y);
             break;
-        case '-': 
+        case '-':
             result = subtract(x, y);
             break;
         case 'x':
