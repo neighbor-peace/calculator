@@ -1,23 +1,37 @@
+let inputObj = {operandA: '0',};
 const display = document.querySelector('#display');
 const buttons = document.querySelectorAll('button');
+
 buttons.forEach((button) => {
-    button.addEventListener('click', handleInput);
+    button.addEventListener('click', processInput);
 });
 
-let inputObj = {operandA: '0',};
+document.addEventListener('keypress', processInput);
 
-function handleInput() {
-    let input = this.textContent;
+function processInput(e) {
+    let input = e.type == 'click' ? this.textContent : e.key;
     if (!isNaN(input)) {
         enterNumber(input);
     } else if (input === '.') {
         enterFloatingPoint();
-    } else if (input === 'AC') {
-        AC();
-    } else if (input === '=') {
-        equals();
+    } else if (input === 'AC' || input === 'Delete') {
+        enterAC();
+    } else if (input === '=' || input === 'Enter') {
+        calculate();
     } else {
-        operator(input);
+        switch(input) {
+            case '+':
+            case '-':
+            case 'x':
+            case '*':
+            case '/':
+            case '÷': 
+                enterOperator(input);
+                break;
+            default: 
+                console.log(input + ' key ignored')
+                return;
+        };
     };
 };
 
@@ -42,13 +56,13 @@ function enterNumber(input) {
 };
 
 function enterFloatingPoint() {
-    if (!inputObj.operator && noDecimalChecker(inputObj.operandA)) {
+    if (!inputObj.operator && checkNoDecimals(inputObj.operandA)) {
         inputObj.operandA += '.';
         display.textContent = inputObj.operandA;
     } else if (inputObj.operator && !inputObj.operandB) {
         inputObj.operandB = '0.';
         display.textContent = inputObj.operandB;
-    } else if (inputObj.operandB && noDecimalChecker(inputObj.operandB)) {
+    } else if (inputObj.operandB && checkNoDecimals(inputObj.operandB)) {
         inputObj.operandB += '.';
         display.textContent = inputObj.operandB;
     } else {
@@ -56,16 +70,16 @@ function enterFloatingPoint() {
     };
 };
 
-function noDecimalChecker(operandInput) {
+function checkNoDecimals(operandInput) {
     return !operandInput.includes('.');
 }
 
-function AC() {
+function enterAC() {
     inputObj = {operandA: '0',};
     display.textContent = '0';
 };
 
-function equals() {
+function calculate() {
     if (!inputObj.operandA || !inputObj.operandB) {
         return;
     } else {
@@ -79,7 +93,7 @@ function equals() {
     };
 };
 
-function operator(input) {
+function enterOperator(input) {
     if (!inputObj.operandA) {
         return;
     } else if (!inputObj.operator) {
@@ -105,9 +119,11 @@ function operate(operator, x, y) {
             result = subtract(x, y);
             break;
         case 'x':
+        case '*':
             result = multiply(x, y);
             break;
         case '÷':
+        case '/':
             result = divide(x, y);
     };
     if (result === Infinity) {
