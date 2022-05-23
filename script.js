@@ -9,7 +9,7 @@ buttons.forEach((button) => {
 document.addEventListener('keypress', processInput);
 
 function processInput(e) {
-    let input = e.type == 'click' ? this.textContent : e.key;
+    let input = e.type == 'click' ? this.textContent : `${e.key}`;
     if (!isNaN(input)) {
         enterNumber(input);
     } else if (input === '.') {
@@ -38,7 +38,7 @@ function processInput(e) {
 function enterNumber(input) {
     if (!inputObj.operator) {
         //inputObj.calculated stops new input from concatenating to previous result
-        if (inputObj.operandA == 0 || inputObj.calculated) {
+        if (inputObj.operandA === '0' || inputObj.calculated) {
             inputObj.operandA = input;
             inputObj.calculated = false;
         } else {
@@ -46,7 +46,7 @@ function enterNumber(input) {
         };
         display.textContent = inputObj.operandA;
     } else if (inputObj.operator) {
-        if (!inputObj.operandB || inputObj.operandB == 0) {
+        if (!inputObj.operandB || inputObj.operandB === '0') {
             inputObj.operandB = input;
         } else {
             inputObj.operandB += input;
@@ -56,7 +56,10 @@ function enterNumber(input) {
 };
 
 function enterFloatingPoint() {
-    if (!inputObj.operator && checkNoDecimals(inputObj.operandA)) {
+    if (inputObj.calculated) {
+        inputObj.operandA = '0.';
+        display.textContent = inputObj.operandA;
+    } else if (!inputObj.operator && checkNoDecimals(inputObj.operandA)) {
         inputObj.operandA += '.';
         display.textContent = inputObj.operandA;
     } else if (inputObj.operator && !inputObj.operandB) {
