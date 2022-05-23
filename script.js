@@ -126,11 +126,9 @@ function operate(operator, x, y) {
         case '/':
             result = divide(x, y);
     };
-    if (result === Infinity) {
-        return "Nice Try";
-    } else {
-        return Number.isInteger(result) ? result : result.toFixed(3);
-    };
+    if (result === Infinity) return "Nice Try";
+    if (Number.isInteger(result)) return result;
+    return Math.round(result * 100) / 100;
 };
 
 
