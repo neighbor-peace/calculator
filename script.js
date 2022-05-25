@@ -1,11 +1,12 @@
 let inputObj = {
     operandX: '0',
-    operandY: '0',
+    //'y' lets user press enter without redundant operandY when both are same
+    operandY: 'y',
     calculated: false,
     currentOperand: 'operandX',
     reset() {
         inputObj.operandX = '0';
-        inputObj.operandY = '0';
+        inputObj.operandY = 'y';
         inputObj.calculated = false;
         inputObj.currentOperand = 'operandX';
         delete inputObj.operator;
@@ -92,7 +93,8 @@ function toggleOperator(input) {
 
 function enterNumber(input) {
     //inputObj.calculated stops new input from concatenating to previous result
-    if (inputObj[inputObj.currentOperand] === '0' || inputObj.calculated) {
+    //'y' lets user press enter without redundant operandY when both are same
+    if (inputObj[inputObj.currentOperand] === '0' || inputObj[inputObj.currentOperand] === 'y' || inputObj.calculated) {
         inputObj[inputObj.currentOperand] = input;
         inputObj.calculated = false;
         toggleClearButton('C');
@@ -137,8 +139,14 @@ function checkNoDecimals(operandInput) {
 
 function calculate() {
     if (inputObj.currentOperand === 'operandX') return;
-    let result = operate(inputObj.operator, inputObj.operandX, inputObj.operandY);
-    inputObj.reset();
+    let result;
+    //'y' lets user press enter without redundant operandY when both are same
+    if (inputObj[inputObj.currentOperand] === 'y' && inputObj.operator) {
+        result = operate(inputObj.operator, inputObj.operandX, inputObj.operandX);
+    } else {
+        result = operate(inputObj.operator, inputObj.operandX, inputObj.operandY);
+        inputObj.reset();
+    }
     //"calculated: true" stops new input from concatenating to previous result
     inputObj.calculated = true;
     inputObj.operandX = result;
