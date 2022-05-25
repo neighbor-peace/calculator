@@ -90,6 +90,7 @@ function toggleOperator(input) {
 };
 
 function enterNumber(input) {
+    if (inputObj[inputObj.currentOperand].length == 6) return;
     //inputObj.calculated stops new input from concatenating to previous result
     //'y' lets user press enter without redundant operandY when both are same
     if (inputObj[inputObj.currentOperand] === '0' || inputObj[inputObj.currentOperand] === 'y' || inputObj.calculated) {
@@ -103,6 +104,7 @@ function enterNumber(input) {
 };
 
 function enterFloatingPoint() {
+    if (inputObj[inputObj.currentOperand].length == 6) return;
     //stops decimal from concatenating to a calculated result
     if (inputObj.calculated) {
         inputObj[inputObj.currentOperand] = '0.';
@@ -192,7 +194,8 @@ function operate(operator, x, y) {
         case '/':
             result = divide(x, y);
     };
-    if (result === Infinity) return "Nice Try";
+    if (result === Infinity) return "...nah";
+    if (result.toString().length > 6) return 'TooBig';
     else if (Number.isInteger(result)) return `${result}`;
     else return `${Math.round(result * 100) / 100}`;
 };
