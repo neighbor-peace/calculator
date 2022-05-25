@@ -57,6 +57,12 @@ function processInput(e) {
             case 'Backspace':
                 removeLastDigit();
                 break;
+            case '%':
+                percentify();
+                break;
+            case '+/-':
+                toggleNegative();
+                break;
             default:
                 console.log(input + ' ignored')
         };
@@ -150,6 +156,16 @@ function enterOperator(input) {
 
 function removeLastDigit() {
     inputObj[inputObj.currentOperand] = inputObj[inputObj.currentOperand].slice(0, -1);
+    display.textContent = inputObj[inputObj.currentOperand];
+};
+
+function percentify() {
+    inputObj[inputObj.currentOperand] = `${inputObj[inputObj.currentOperand] / 100}`;
+    display.textContent = inputObj[inputObj.currentOperand];
+};
+
+function toggleNegative() {
+    inputObj[inputObj.currentOperand] = `${inputObj[inputObj.currentOperand] * -1}`;
     display.textContent = inputObj[inputObj.currentOperand];
 };
 
