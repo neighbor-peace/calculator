@@ -21,9 +21,7 @@ const clearButton = document.querySelector('#clear');
 buttons.forEach((button) => {
     button.addEventListener('click', processInput);
 });
-
 document.addEventListener('keypress', processInput);
-
 //backspace doesn't register on 'keypress'
 document.addEventListener('keydown', (e) => {
     if (e.key == 'Backspace') processInput(e);

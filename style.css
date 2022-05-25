@@ -4,6 +4,7 @@ body {
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    font-family: monospace;
 }
 
 .container {
@@ -12,7 +13,7 @@ body {
 
 #content {
     display: flex;
-    background-color: cyan;
+    background-color: rgb(88, 86, 86);
     flex: 1;
     align-items: center;  
     justify-content: center;  
@@ -20,57 +21,61 @@ body {
 
 .calculator.container {
     flex-direction: column;
-    background-color: lightgreen;
-    width: 80%;
-    height: 80%;
-    max-width: 600px;
-    max-height: auto;
+    background-color: #0a202f;
+    width: 550px;
+    height: 700px;
+    border-radius: 10px;
+    padding: 20px;
 }
 
 #display {
     flex: 1;
-    background-color: white;
+    background-color: rgb(173, 166, 166);
     text-align: end;
     font-size: 150px;
+    border-style: solid;
+    border-width: 5px;
+    text-shadow: 2px 2px #343232;
+    margin-bottom: 10px;
 }
 
-#buttons {
+.buttons.container {
     flex: 4;
-    display: flex;
-}
-
-.numbers.container {
-    flex-direction: column;
-    flex: 3;
-}
-
-.row {
-    display: flex;
-    flex: 1;
-    display: flex;
-    justify-content: space-around;
-    align-items: stretch;
-    
-}
-
-.fourth {
-    flex: 0.7;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
 }
 
 #zero {
-    flex: 2;
+    grid-column-start: 1;
+    grid-column-end: 3;
 }
 
 button {
-    background-color: yellow;
+    background-color: #ACF0F2;
     flex: 1;
-    margin: 5px;
+    font-size: 30px;
+    margin: 3px;
+    font-family: monospace;
+    font-weight: 900;
+    border-radius: 4px;
+}
+
+button.operator,
+#equals {
+    background-color: #EB7F00;
+    color: white;
 }
 
 button.toggled {
-    background-color: aqua;
+    background-color: white;
+    color: #EB7F00;
 }
 
+#clear,
+#negative,
+#percent {
+    background-color: #598a71;
+}
 
 
 .operator.container {
@@ -85,5 +90,11 @@ button.toggled {
 
 #header,
 #footer {
-    background-color: blue;
+    background-color: #1695A3;
+    text-align: center;
+    font-size: 30px;
+}
+
+#footer {
+    font-size: 20px;
 }
