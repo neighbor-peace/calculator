@@ -15,6 +15,7 @@ let inputObj = {
 const display = document.querySelector('#display');
 const buttons = document.querySelectorAll('button');
 const operatorButtons = document.querySelectorAll('button.operator');
+const clearButton = document.querySelector('#clear');
 
 buttons.forEach((button) => {
     button.addEventListener('click', processInput);
@@ -36,33 +37,21 @@ function processInput(e) {
             case '.':
                 enterFloatingPoint();
                 break;
+            case 'C':
             case 'AC':
             case 'Delete':
-                toggleOperator();
-                inputObj.reset();
-                display.textContent = '0';
+                clearDisplay();
                 break;
             case '=':
             case 'Enter':
-                toggleOperator();
                 calculate();
                 break;
             case '+':
-                toggleOperator(input);
-                enterOperator(input);
-                break;
             case '-':
-                toggleOperator(input);
-                enterOperator(input);
-                break;
             case 'x':
             case '*':
-                toggleOperator(input);
-                enterOperator(input);
-                break;
             case '/':
             case '÷':
-                toggleOperator(input);
                 enterOperator(input);
                 break;
             case 'Backspace':
@@ -100,6 +89,7 @@ function enterNumber(input) {
     if (inputObj[inputObj.currentOperand] === '0' || inputObj.calculated) {
         inputObj[inputObj.currentOperand] = input;
         inputObj.calculated = false;
+        toggleClearButton('C');
     } else {
         inputObj[inputObj.currentOperand] += input;
     };
@@ -116,11 +106,28 @@ function enterFloatingPoint() {
         inputObj[inputObj.currentOperand] += '.';
         display.textContent = inputObj[inputObj.currentOperand];
     };
+    toggleClearButton('C');
+};
+
+function clearDisplay() {
+    if (inputObj[inputObj.currentOperand] === '0') {
+        display.textContent = '0';
+        inputObj.reset();
+        toggleOperator();
+    } else {
+        inputObj[inputObj.currentOperand] = '0';
+        display.textContent = '0';
+        toggleClearButton('AC')
+    };
+};
+
+function toggleClearButton(choice) {
+    clearButton.textContent = choice;
 };
 
 function checkNoDecimals(operandInput) {
     return !operandInput.includes('.');
-}
+};
 
 function calculate() {
     if (inputObj.currentOperand === 'operandX') return;
@@ -130,6 +137,7 @@ function calculate() {
     inputObj.calculated = true;
     inputObj.operandX = result;
     display.textContent = result;
+    toggleOperator();
 };
 
 function enterOperator(input) {
@@ -137,6 +145,7 @@ function enterOperator(input) {
     inputObj.currentOperand = 'operandY';
     inputObj.operator = input;
     inputObj.calculated = false;
+    toggleOperator(input);
 };
 
 function removeLastDigit() {
