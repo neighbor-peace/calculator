@@ -1,6 +1,20 @@
-let inputObj = {operandA: '0',};
+let inputObj = {
+    operandX: '0',
+    operandY: '0',
+    calculated: false,
+    currentOperand: 'operandX',
+    reset() {
+        inputObj.operandX = '0';
+        inputObj.operandY = '0';
+        inputObj.calculated = false;
+        inputObj.currentOperand = 'operandX';
+        delete inputObj.operator;
+    },
+};
+
 const display = document.querySelector('#display');
 const buttons = document.querySelectorAll('button');
+const operatorButtons = document.querySelectorAll('button.operator');
 
 buttons.forEach((button) => {
     button.addEventListener('click', processInput);
@@ -13,6 +27,7 @@ document.addEventListener('keydown', (e) => {
 });
 
 function processInput(e) {
+    //assign input for click or keypress
     let input = e.type == 'click' ? this.textContent : `${e.key}`;
     if (!isNaN(input)) {
         enterNumber(input);
@@ -24,7 +39,8 @@ function processInput(e) {
             case 'AC':
             case 'Delete':
                 toggleOperator();
-                enterAC();
+                inputObj.reset();
+                display.textContent = '0';
                 break;
             case '=':
             case 'Enter':
@@ -60,7 +76,7 @@ function processInput(e) {
 };
 
 function toggleOperator(input) {
-    buttons.forEach((button) => button.classList.remove('toggled'));
+    operatorButtons.forEach((button) => button.classList.remove('toggled'));
     if(input) {
         switch(input) {
             case '+':
@@ -76,46 +92,29 @@ function toggleOperator(input) {
             case '/':
             case '÷':
                 document.querySelector('#divide').classList.add('toggled');
-                break;
         };
     };
 };
 
 function enterNumber(input) {
-    if (!inputObj.operator) {
-        //inputObj.calculated stops new input from concatenating to previous result
-        if (inputObj.operandA === '0' || inputObj.calculated) {
-            inputObj.operandA = input;
-            inputObj.calculated = false;
-        } else {
-            inputObj.operandA += input;
-        };
-        display.textContent = inputObj.operandA;
-    } else if (inputObj.operator) {
-        if (!inputObj.operandB || inputObj.operandB === '0') {
-            inputObj.operandB = input;
-        } else {
-            inputObj.operandB += input;
-        };
-        display.textContent = inputObj.operandB;
+    //inputObj.calculated stops new input from concatenating to previous result
+    if (inputObj[inputObj.currentOperand] === '0' || inputObj.calculated) {
+        inputObj[inputObj.currentOperand] = input;
+        inputObj.calculated = false;
+    } else {
+        inputObj[inputObj.currentOperand] += input;
     };
+    display.textContent = inputObj[inputObj.currentOperand];
 };
 
 function enterFloatingPoint() {
     if (inputObj.calculated) {
-        inputObj.operandA = '0.';
-        display.textContent = inputObj.operandA;
-    } else if (!inputObj.operator && checkNoDecimals(inputObj.operandA)) {
-        inputObj.operandA += '.';
-        display.textContent = inputObj.operandA;
-    } else if (inputObj.operator && !inputObj.operandB) {
-        inputObj.operandB = '0.';
-        display.textContent = inputObj.operandB;
-    } else if (inputObj.operandB && checkNoDecimals(inputObj.operandB)) {
-        inputObj.operandB += '.';
-        display.textContent = inputObj.operandB;
-    } else {
-        return;
+        inputObj[inputObj.currentOperand] = '0.';
+        inputObj.calculated = false;
+        display.textContent = inputObj[inputObj.currentOperand];
+    } else if (checkNoDecimals(inputObj[inputObj.currentOperand])) {
+        inputObj[inputObj.currentOperand] += '.';
+        display.textContent = inputObj[inputObj.currentOperand];
     };
 };
 
@@ -123,40 +122,21 @@ function checkNoDecimals(operandInput) {
     return !operandInput.includes('.');
 }
 
-function enterAC() {
-    inputObj = {operandA: '0',};
-    display.textContent = '0';
-};
-
 function calculate() {
-    if (!inputObj.operandA || !inputObj.operandB) {
-        return;
-    } else {
-        let result = operate(inputObj.operator, inputObj.operandA, inputObj.operandB);
-        inputObj = {
-            operandA: result,
-            //"calculated: true" stops new input from concatenating to previous result
-            calculated: true, 
-        };
-        display.textContent = result;
-    };
+    if (inputObj.currentOperand === 'operandX') return;
+    let result = operate(inputObj.operator, inputObj.operandX, inputObj.operandY);
+    inputObj.reset();
+    //"calculated: true" stops new input from concatenating to previous result
+    inputObj.calculated = true;
+    inputObj.operandX = result;
+    display.textContent = result;
 };
 
 function enterOperator(input) {
-    console.log();
-    if (!inputObj.operandA) {
-        return;
-    } else if (!inputObj.operator || !inputObj.operandB) {
-        inputObj.operator = input;
-    } else if (!inputObj.operandB) {
-        return;
-    } else {
-        let result = operate(inputObj.operator, inputObj.operandA, inputObj.operandB);
-        inputObj = {
-            operandA: result,
-            operator: input,};
-        display.textContent = result; 
-    };
+    if (inputObj.operator) calculate();
+    inputObj.currentOperand = 'operandY';
+    inputObj.operator = input;
+    inputObj.calculated = false;
 };
 
 function operate(operator, x, y) {
@@ -177,8 +157,8 @@ function operate(operator, x, y) {
             result = divide(x, y);
     };
     if (result === Infinity) return "Nice Try";
-    if (Number.isInteger(result)) return result;
-    return Math.round(result * 100) / 100;
+    else if (Number.isInteger(result)) return result;
+    else return Math.round(result * 100) / 100;
 };
 
 
