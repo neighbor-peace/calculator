@@ -22,12 +22,12 @@ buttons.forEach((button) => {
 
 document.addEventListener('keypress', processInput);
 
+//backspace doesn't register on 'keypress'
 document.addEventListener('keydown', (e) => {
     if (e.key == 'Backspace') processInput(e);
 });
 
 function processInput(e) {
-    //assign input for click or keypress
     let input = e.type == 'click' ? this.textContent : `${e.key}`;
     if (!isNaN(input)) {
         enterNumber(input);
@@ -107,6 +107,7 @@ function enterNumber(input) {
 };
 
 function enterFloatingPoint() {
+    //stops decimal from concatenating to a calculated result
     if (inputObj.calculated) {
         inputObj[inputObj.currentOperand] = '0.';
         inputObj.calculated = false;
@@ -138,6 +139,11 @@ function enterOperator(input) {
     inputObj.calculated = false;
 };
 
+function removeLastDigit() {
+    inputObj[inputObj.currentOperand] = inputObj[inputObj.currentOperand].slice(0, -1);
+    display.textContent = inputObj[inputObj.currentOperand];
+};
+
 function operate(operator, x, y) {
     let result;
     switch(operator) {
@@ -156,8 +162,8 @@ function operate(operator, x, y) {
             result = divide(x, y);
     };
     if (result === Infinity) return "Nice Try";
-    else if (Number.isInteger(result)) return result;
-    else return Math.round(result * 100) / 100;
+    else if (Number.isInteger(result)) return `${result}`;
+    else return `${Math.round(result * 100) / 100}`;
 };
 
 
