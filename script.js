@@ -36,11 +36,6 @@ function processInput(e) {
             case '.':
                 enterFloatingPoint();
                 break;
-            case 'C':
-            case 'AC':
-            case 'Delete':
-                clearDisplay();
-                break;
             case '=':
             case 'Enter':
                 calculate();
@@ -52,6 +47,11 @@ function processInput(e) {
             case '/':
             case '÷':
                 enterOperator(input);
+                break;
+            case 'C':
+            case 'AC':
+            case 'Delete':
+                clearDisplay();
                 break;
             case 'Backspace':
                 removeLastDigit();
