@@ -37,7 +37,10 @@ function processInput(e) {
                 enterFloatingPoint();
                 break;
             case '=':
+                calculate();
+                break;
             case 'Enter':
+                console.log('pressed enter')
                 calculate();
                 break;
             case '+':
@@ -163,6 +166,7 @@ function enterOperator(input) {
 };
 
 function removeLastDigit() {
+    if (inputObj[inputObj.currentOperand] === '0') return;
     inputObj[inputObj.currentOperand] = inputObj[inputObj.currentOperand].slice(0, -1);
     display.textContent = inputObj[inputObj.currentOperand];
 };
@@ -194,10 +198,10 @@ function operate(operator, x, y) {
         case '/':
             result = divide(x, y);
     };
+    result = Math.round(result * 100) / 100;
     if (result === Infinity) return "...nah";
     if (result.toString().length > 6) return 'TooBig';
-    else if (Number.isInteger(result)) return `${result}`;
-    else return `${Math.round(result * 100) / 100}`;
+    return `${result}`;
 };
 
 
