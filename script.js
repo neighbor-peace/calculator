@@ -167,7 +167,8 @@ function enterOperator(input) {
 
 function removeLastDigit() {
     if (inputObj[inputObj.currentOperand] === '0') return;
-    inputObj[inputObj.currentOperand] = inputObj[inputObj.currentOperand].slice(0, -1);
+    else if (isNaN(+inputObj[inputObj.currentOperand]) || inputObj[inputObj.currentOperand].length === 1) inputObj[inputObj.currentOperand] = '0';
+    else inputObj[inputObj.currentOperand] = inputObj[inputObj.currentOperand].slice(0, -1);
     display.textContent = inputObj[inputObj.currentOperand];
 };
 
