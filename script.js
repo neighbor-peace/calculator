@@ -177,6 +177,7 @@ function percentify() {
 };
 
 function toggleNegative() {
+    if (inputObj[inputObj.currentOperand] == 'y') return;
     inputObj[inputObj.currentOperand] = `${inputObj[inputObj.currentOperand] * -1}`;
     display.textContent = inputObj[inputObj.currentOperand];
 };
