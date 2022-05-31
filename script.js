@@ -39,7 +39,6 @@ function processInput(e) {
                 enterFloatingPoint();
                 break;
             case '=':
-            case 'Enter':
                 calculate();
                 break;
             case '+':
@@ -139,24 +138,27 @@ function checkNoDecimals(operandInput) {
 };
 
 function calculate() {
-    if (inputObj.currentOperand === 'operandX') return;
+    if (inputObj.currentOperand === 'operandX' && !inputObj.operator) return;
     let result;
     //'y' lets user press enter without redundant operandY when both are same
     if (inputObj[inputObj.currentOperand] === 'y' && inputObj.operator) {
         result = operate(inputObj.operator, inputObj.operandX, inputObj.operandX);
     } else {
         result = operate(inputObj.operator, inputObj.operandX, inputObj.operandY);
-        inputObj.reset();
     }
     //"calculated: true" stops new input from concatenating to previous result
     inputObj.calculated = true;
     inputObj.operandX = result;
     display.textContent = result;
+    inputObj.currentOperand = 'operandX';
     toggleOperator();
 };
 
 function enterOperator(input) {
-    if (inputObj.operator && inputObj.currentOperand === 'operandY' && inputObj.operandY !== 'y') calculate();
+    if (inputObj.operator && inputObj.currentOperand === 'operandY' && inputObj.operandY !== 'y') {
+        calculate();
+        inputObj.operandY = 'y';
+    }
     inputObj.currentOperand = 'operandY';
     inputObj.operator = input;
     inputObj.calculated = false;
