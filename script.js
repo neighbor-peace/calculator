@@ -13,6 +13,8 @@ let inputObj = {
     },
 };
 
+let displayedNum;
+
 const display = document.querySelector('#display');
 const buttons = document.querySelectorAll('button');
 const operatorButtons = document.querySelectorAll('button.operator');
@@ -28,10 +30,10 @@ document.addEventListener('keydown', (e) => {
 });
 
 function processInput(e) {
+    displayedNum = inputObj[inputObj.currentOperand];
     let input = e.type == 'click' ? this.textContent : `${e.key}`;
-    if (!isNaN(input)) {
-        enterNumber(input);
-    } else {
+    if (!isNaN(input)) enterNumber(input);
+    else {
         switch(input) {
             case '.':
                 enterFloatingPoint();
@@ -93,40 +95,38 @@ function toggleOperator(input) {
 };
 
 function enterNumber(input) {
-    if (inputObj[inputObj.currentOperand].length == 6) return;
     //inputObj.calculated stops new input from concatenating to previous result
     //'y' lets user press enter without redundant operandY when both are same
-    if (inputObj[inputObj.currentOperand] === '0' || inputObj[inputObj.currentOperand] === 'y' || inputObj.calculated) {
-        inputObj[inputObj.currentOperand] = input;
+    if (displayedNum === '0' || displayedNum === 'y' || inputObj.calculated) {
+        displayedNum = input;
         inputObj.calculated = false;
         toggleClearButton('C');
     } else {
-        inputObj[inputObj.currentOperand] += input;
+        displayedNum += input;
     };
-    display.textContent = inputObj[inputObj.currentOperand];
+    display.textContent = displayedNum;
 };
 
 function enterFloatingPoint() {
-    if (inputObj[inputObj.currentOperand].length == 6) return;
     //stops decimal from concatenating to a calculated result
     if (inputObj.calculated) {
-        inputObj[inputObj.currentOperand] = '0.';
+        displayedNum = '0.';
         inputObj.calculated = false;
-        display.textContent = inputObj[inputObj.currentOperand];
-    } else if (checkNoDecimals(inputObj[inputObj.currentOperand])) {
-        inputObj[inputObj.currentOperand] += '.';
-        display.textContent = inputObj[inputObj.currentOperand];
+        display.textContent = displayedNum;
+    } else if (checkNoDecimals(displayedNum)) {
+        displayedNum += '.';
+        display.textContent = displayedNum;
     };
     toggleClearButton('C');
 };
 
 function clearDisplay() {
-    if (inputObj[inputObj.currentOperand] === '0') {
+    if (displayedNum === '0') {
         display.textContent = '0';
         inputObj.reset();
         toggleOperator();
     } else {
-        inputObj[inputObj.currentOperand] = '0';
+        displayedNum = '0';
         display.textContent = '0';
         toggleClearButton('AC')
     };
@@ -144,7 +144,7 @@ function calculate() {
     if (inputObj.currentOperand === 'operandX') return;
     let result;
     //'y' lets user press enter without redundant operandY when both are same
-    if (inputObj[inputObj.currentOperand] === 'y' && inputObj.operator) {
+    if (displayedNum === 'y' && inputObj.operator) {
         result = operate(inputObj.operator, inputObj.operandX, inputObj.operandX);
     } else {
         result = operate(inputObj.operator, inputObj.operandX, inputObj.operandY);
@@ -160,25 +160,30 @@ function calculate() {
 function enterOperator(input) {
     if (inputObj.operator) calculate();
     inputObj.currentOperand = 'operandY';
+    displayedNum = inputObj[inputObj.currentOperand];
     inputObj.operator = input;
     inputObj.calculated = false;
     toggleOperator(input);
 };
 
 function removeLastDigit() {
-    if (inputObj[inputObj.currentOperand] === '0') return;
-    inputObj[inputObj.currentOperand] = inputObj[inputObj.currentOperand].slice(0, -1);
-    display.textContent = inputObj[inputObj.currentOperand];
+    if (displayedNum === '0') return;
+    else if (displayedNum.length === 1 || typeof +displayedNum !== 'number') {
+        displayedNum = '0';
+        if (inputObj.currentOperand = 'operandX') toggleClearButton('AC');
+    }
+    else displayedNum = displayedNum.slice(0, -1);
+    display.textContent = displayedNum;
 };
 
 function percentify() {
-    inputObj[inputObj.currentOperand] = `${inputObj[inputObj.currentOperand] / 100}`;
-    display.textContent = inputObj[inputObj.currentOperand];
+    displayedNum = `${displayedNum / 100}`;
+    display.textContent = displayedNum;
 };
 
 function toggleNegative() {
-    inputObj[inputObj.currentOperand] = `${inputObj[inputObj.currentOperand] * -1}`;
-    display.textContent = inputObj[inputObj.currentOperand];
+    displayedNum = `${displayedNum * -1}`;
+    display.textContent = displayedNum;
 };
 
 function operate(operator, x, y) {
