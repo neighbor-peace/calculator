@@ -57,6 +57,7 @@ function processInput(e) {
                 clearDisplay();
                 break;
             case 'Backspace':
+            case '⌫':
                 removeLastDigit();
                 break;
             case '%':

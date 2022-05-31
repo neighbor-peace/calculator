@@ -71,21 +71,23 @@ button.toggled {
     color: #EB7F00;
 }
 
-#clear,
-#negative,
-#percent {
+.top-row {
     background-color: #598a71;
 }
 
-
-.operator.container {
-    flex-direction: column;
-    flex: 1;
-    justify-content: space-around;
-    align-items: stretch;
+#product-label {
+    display: flex;
+    font-family: 'Lobster', cursive;
+    color: #ACF0F2;
+    font-size: 40px;
+    grid-column: 1 / 4;
+    align-items: center;
+    justify-content: center;
 }
 
-
+#equals {
+    grid-column-end: 5;
+}
 
 
 #header,
