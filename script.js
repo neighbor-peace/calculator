@@ -166,7 +166,10 @@ function enterOperator(input) {
 
 function removeLastDigit() {
     if (inputObj[inputObj.currentOperand] === '0') return;
-    else if (isNaN(+inputObj[inputObj.currentOperand]) || inputObj[inputObj.currentOperand].length === 1) inputObj[inputObj.currentOperand] = '0';
+    else if (isNaN(+inputObj[inputObj.currentOperand]) || inputObj[inputObj.currentOperand].length === 1) {
+        inputObj[inputObj.currentOperand] = '0';
+        toggleClearButton('AC');
+    }
     else inputObj[inputObj.currentOperand] = inputObj[inputObj.currentOperand].slice(0, -1);
     display.textContent = inputObj[inputObj.currentOperand];
 };
