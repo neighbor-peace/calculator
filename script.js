@@ -17,6 +17,7 @@ const display = document.querySelector('#display');
 const buttons = document.querySelectorAll('button');
 const operatorButtons = document.querySelectorAll('button.operator');
 const clearButton = document.querySelector('#clear');
+const equalsButton = document.querySelector('#equals');
 
 buttons.forEach((button) => {
     button.addEventListener('click', processInput);
@@ -28,6 +29,7 @@ document.addEventListener('keydown', (e) => {
 });
 
 function processInput(e) {
+    equalsButton.focus();  //allows pressing enter
     let input = e.type == 'click' ? this.textContent : `${e.key}`;
     if (!isNaN(input)) {
         enterNumber(input);
@@ -37,10 +39,7 @@ function processInput(e) {
                 enterFloatingPoint();
                 break;
             case '=':
-                calculate();
-                break;
             case 'Enter':
-                console.log('pressed enter')
                 calculate();
                 break;
             case '+':
@@ -94,7 +93,6 @@ function toggleOperator(input) {
 };
 
 function enterNumber(input) {
-    if (inputObj[inputObj.currentOperand].length == 6) return;
     //inputObj.calculated stops new input from concatenating to previous result
     //'y' lets user press enter without redundant operandY when both are same
     if (inputObj[inputObj.currentOperand] === '0' || inputObj[inputObj.currentOperand] === 'y' || inputObj.calculated) {
@@ -167,7 +165,7 @@ function enterOperator(input) {
 
 function removeLastDigit() {
     if (inputObj[inputObj.currentOperand] === '0') return;
-    else if (isNaN(+inputObj[inputObj.currentOperand]) || inputObj[inputObj.currentOperand].length === 1) {
+    else if (isNaN(+inputObj[inputObj.currentOperand]) || inputObj[inputObj.currentOperand].length === 1 || inputObj.calculated) {
         inputObj[inputObj.currentOperand] = '0';
         toggleClearButton('AC');
     }
@@ -205,7 +203,6 @@ function operate(operator, x, y) {
     };
     result = Math.round(result * 100) / 100;
     if (result === Infinity) return "...nah";
-    if (result.toString().length > 6) return 'TooBig';
     return `${result}`;
 };
 

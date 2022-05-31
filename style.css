@@ -26,6 +26,7 @@ body {
     height: 700px;
     border-radius: 10px;
     padding: 20px;
+    min-width: 369px;
 }
 
 #display {
@@ -58,6 +59,7 @@ button {
     font-family: monospace;
     font-weight: 900;
     border-radius: 4px;
+    /* outline: none; */
 }
 
 button.operator,
