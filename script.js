@@ -107,9 +107,8 @@ function enterNumber(input) {
 };
 
 function enterFloatingPoint() {
-    if (inputObj[inputObj.currentOperand].length == 6) return;
     //stops decimal from concatenating to a calculated result
-    if (inputObj.calculated) {
+    if (inputObj.calculated || inputObj[inputObj.currentOperand] == 'y') {
         inputObj[inputObj.currentOperand] = '0.';
         inputObj.calculated = false;
         display.textContent = inputObj[inputObj.currentOperand];
