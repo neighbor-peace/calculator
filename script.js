@@ -158,7 +158,7 @@ function calculate() {
 };
 
 function enterOperator(input) {
-    if (inputObj.operator) calculate();
+    if (inputObj.operator && inputObj.currentOperand === 'operandY' && inputObj.operandY !== 'y') calculate();
     inputObj.currentOperand = 'operandY';
     inputObj.operator = input;
     inputObj.calculated = false;
