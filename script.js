@@ -124,6 +124,7 @@ function clearDisplay() {
         display.textContent = '0';
         inputObj.reset();
         toggleOperator();
+        toggleBackspace('⌫');
     } else {
         inputObj[inputObj.currentOperand] = '0';
         display.textContent = '0';
