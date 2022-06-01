@@ -92,6 +92,7 @@ function toggleOperator(input) {
 };
 
 function enterNumber(input) {
+    if (inputObj[inputObj.currentOperand].length >= 22) return;
     //inputObj.calculated stops new input from concatenating to previous result
     //'y' lets user press enter without redundant operandY when both are same
     if (inputObj[inputObj.currentOperand] === '0' || inputObj[inputObj.currentOperand] === 'y' || inputObj.calculated) {
