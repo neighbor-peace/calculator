@@ -18,6 +18,7 @@ const buttons = document.querySelectorAll('button');
 const operatorButtons = document.querySelectorAll('button.operator');
 const clearButton = document.querySelector('#clear');
 const equalsButton = document.querySelector('#equals');
+const backspaceButton = document.querySelector('#backspace');
 
 buttons.forEach((button) => {
     button.addEventListener('click', processInput);
@@ -127,12 +128,17 @@ function clearDisplay() {
         inputObj[inputObj.currentOperand] = '0';
         display.textContent = '0';
         toggleClearButton('AC')
+        toggleBackspace('⌫');
     };
 };
 
 function toggleClearButton(choice) {
     clearButton.textContent = choice;
 };
+
+function toggleBackspace(choice) {
+    backspaceButton.textContent = choice;
+}
 
 function checkNoDecimals(operandInput) {
     return !operandInput.includes('.');
@@ -153,6 +159,7 @@ function calculate() {
     display.textContent = result;
     inputObj.currentOperand = 'operandX';
     toggleOperator();
+    toggleBackspace('AC');
 };
 
 function enterOperator(input) {
@@ -172,6 +179,7 @@ function removeLastDigit() {
     else if (isNaN(+inputObj[inputObj.currentOperand]) || inputObj[inputObj.currentOperand].length === 1 || inputObj.calculated) {
         inputObj[inputObj.currentOperand] = '0';
         toggleClearButton('AC');
+        toggleBackspace('⌫');
     }
     else inputObj[inputObj.currentOperand] = inputObj[inputObj.currentOperand].slice(0, -1);
     display.textContent = inputObj[inputObj.currentOperand];
